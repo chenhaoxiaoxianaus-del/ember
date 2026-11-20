@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="zh-Hant"><head><meta charset="utf-8">
+<style>
+@font-face{font-family:'Manrope';font-weight:600;src:url(data:font/woff2;base64,{{ fonts.m600 }}) format('woff2');}
+@font-face{font-family:'Manrope';font-weight:700;src:url(data:font/woff2;base64,{{ fonts.m700 }}) format('woff2');}
+@font-face{font-family:'Manrope';font-weight:800;src:url(data:font/woff2;base64,{{ fonts.m800 }}) format('woff2');}
+:root{--deep:{{ th.deep }};--teal:{{ th.accent }};--acc2:{{ th.accent_text }};--cream:{{ th.bg }};--ink:#1d2b31;--mute:#5d6b70;--line:{{ th.line }};}
+*{margin:0;padding:0;box-sizing:border-box;}
+html,body{width:1080px;height:{{ H }}px;background:var(--cream);}
+body{font-family:'Manrope','Noto Sans CJK TC',sans-serif;color:var(--ink);overflow:hidden;-webkit-font-smoothing:antialiased;}
+.serif{font-family:'Noto Serif CJK TC',serif;font-weight:700;}
+.cjk{font-family:'Noto Sans CJK TC';}
+.page{position:absolute;inset:0;display:flex;flex-direction:column;}
+.hdr{margin:0 31px;background:var(--deep);color:#fff;padding:{{ '44px 60px 40px' if mode=='a4' else '36px 60px 32px' }};}
+.kick{display:flex;justify-content:space-between;color:var(--teal);font-weight:700;font-size:15px;letter-spacing:4px;}
+.kick .tag{font-family:'Noto Sans CJK TC';letter-spacing:2px;background:var(--teal);color:var(--deep);padding:3px 12px;font-size:15px;}
+.ttl{font-size:{{ 56 if mode=='a4' else 50 }}px;line-height:1.22;margin-top:18px;letter-spacing:1px;}
+.ttl em{font-style:normal;color:var(--teal);}
+.dek{font-family:'Noto Sans CJK TC';font-size:{{ 19.5 if mode=='a4' else 18.5 }}px;line-height:1.65;color:#dce6e6;margin-top:16px;}
+.dek b{color:#fff;font-weight:700;}
+.stats{display:grid;grid-template-columns:repeat({{ d.stats|length }},1fr);gap:13px;margin:{{ '24px 92px 0' if mode=='a4' else '20px 92px 0' }};}
+.card{background:#fff;border-top:4px solid var(--teal);padding:{{ '20px 20px 18px' if mode=='a4' else '15px 18px 14px' }};}
+.card .lb{font-family:'Noto Sans CJK TC';font-size:15.5px;color:#34444a;}
+.card .v{font-weight:800;font-size:{{ 44 if mode=='a4' else 38 }}px;line-height:1.1;margin-top:6px;color:var(--deep);letter-spacing:-.5px;}
+.card .v small{font-family:'Noto Sans CJK TC';font-size:19px;font-weight:700;margin-left:3px;}
+.card .n{font-family:'Noto Sans CJK TC';font-size:13.5px;color:var(--mute);margin-top:5px;line-height:1.4;}
+.grid{flex:1;display:grid;grid-template-columns:1fr 1fr;gap:{{ '0 40px' if mode=='a4' else '0 36px' }};margin:{{ '22px 92px 0' if mode=='a4' else '16px 92px 0' }};align-content:{{ 'space-around' if mode=='a4' else 'space-evenly' }};}
+.blk{border-top:1px solid var(--line);padding:{{ '20px 0 18px' if mode=='a4' else '14px 0 10px' }};}
+.blk.full{grid-column:1/-1;}
+.blk .h{display:flex;align-items:baseline;gap:12px;}
+.blk .h .k{font-size:{{ 28 if mode=='a4' else 26 }}px;color:var(--deep);}
+.blk .h .e{font-weight:700;font-size:11.5px;letter-spacing:2.2px;color:var(--acc2);}
+.blk ul{list-style:none;margin-top:{{ '10px' if mode=='a4' else '7px' }};}
+.blk li{font-family:'Noto Sans CJK TC';font-size:{{ 20 if mode=='a4' else 18.5 }}px;line-height:{{ 1.7 if mode=='a4' else 1.6 }};color:#33434a;padding-left:17px;position:relative;margin-top:{{ '10px' if mode=='a4' else '6px' }};}
+.blk li:before{content:'';position:absolute;left:0;top:.62em;width:7px;height:7px;background:var(--teal);}
+.blk li b{color:var(--ink);}
+.ins{margin:{{ '6px 92px 0' if mode=='a4' else '4px 92px 0' }};background:#fff;border-left:5px solid var(--teal);padding:16px 24px;display:flex;gap:20px;align-items:flex-start;}
+.ins .k{font-size:21px;color:var(--deep);white-space:nowrap;padding-top:2px;}
+.ins .b{font-family:'Noto Sans CJK TC';font-size:16.5px;line-height:1.65;color:#3e4c51;}
+.src{font-family:'Manrope','Noto Sans CJK TC';font-size:12.5px;font-weight:600;color:#8a9599;margin:{{ '12px 92px 22px' if mode=='a4' else '10px 92px 18px' }};}
+.ftr{margin:0 31px;background:var(--deep);color:#fff;display:flex;align-items:center;padding:20px 62px;gap:30px;}
+.ftr .l{flex:1;}
+.nm{display:flex;align-items:baseline;gap:18px;}
+.nm .n{font-size:32px;letter-spacing:.5px;}
+.nm .r{font-family:'Noto Sans CJK TC';font-size:17px;color:var(--teal);}
+.ct{font-weight:600;font-size:21px;margin-top:8px;letter-spacing:.3px;}
+.dc{font-family:'Noto Sans CJK TC';font-size:13.5px;color:#a9c2c4;margin-top:8px;}
+.qr{width:104px;height:104px;background:#fff;padding:5px;}
+.qr img{width:100%;height:100%;display:block;image-rendering:pixelated;}
+</style></head><body><div class="page">
+<div class="hdr">
+  <div class="kick"><span>{{ d.kicker }} · {{ d.date_en }}</span><span class="tag">{{ d.badge }}</span></div>
+  <div class="ttl serif">{{ d.title|safe }}</div>
+  <div class="dek">{{ d.dek|safe }}</div>
+</div>
+<div class="stats">
+{% for s in d.stats %}<div class="card"><div class="lb">{{ s.label }}</div><div class="v">{{ s.value }}<small>{{ s.unit }}</small></div><div class="n">{{ s.note }}</div></div>{% endfor %}
+</div>
+<div class="grid">
+{% for b in d.blocks %}{% if not (b.a4_only and mode!='a4') %}<div class="blk{{ ' full' if b.full else '' }}"><div class="h"><span class="k serif">{{ b.key }}</span><span class="e">{{ b.en }}</span></div><ul>{% for x in b['items'] %}<li>{{ x|safe }}</li>{% endfor %}</ul></div>{% endif %}{% endfor %}
+</div>
+{% if mode=='a4' or d.insight_in_ig %}<div class="ins"><div class="k serif">{{ d.insight.title }}</div><div class="b">{{ d.insight.body }}</div></div>{% endif %}
+<div class="src">資料來源：{{ d.sources }}</div>
+<div class="ftr">
+  <div class="l">
+    <div class="nm"><span class="n serif">陳先生 Ivan Chen</span><span class="r">資深買方代理 · Mejia Property</span></div>
+    <div class="ct">0433 024 808 · ivan.c@mejia.au</div>
+    <div class="dc">資料整理自公開新聞來源，僅供參考，不構成投資或移民建議。</div>
+  </div>
+  <div class="qr"><img src="data:image/png;base64,{{ qr }}"></div>
+</div>
+</div></body></html>
