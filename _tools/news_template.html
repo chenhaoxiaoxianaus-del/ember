@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="zh-Hant"><head><meta charset="utf-8">
+<style>
+@font-face{font-family:'Manrope';font-weight:600;src:url(data:font/woff2;base64,{{ fonts.m600 }}) format('woff2');}
+@font-face{font-family:'Manrope';font-weight:700;src:url(data:font/woff2;base64,{{ fonts.m700 }}) format('woff2');}
+@font-face{font-family:'Manrope';font-weight:800;src:url(data:font/woff2;base64,{{ fonts.m800 }}) format('woff2');}
+:root{--deep:{{ th.deep }};--teal:{{ th.accent }};--acc2:{{ th.accent_text }};--cream:{{ th.bg }};--ink:#1d2b31;--mute:#5d6b70;--line:{{ th.line }};}
+*{margin:0;padding:0;box-sizing:border-box;}
+html,body{width:1080px;height:{{ H }}px;background:var(--cream);}
+body{font-family:'Manrope','Noto Sans CJK TC',sans-serif;color:var(--ink);position:relative;overflow:hidden;-webkit-font-smoothing:antialiased;}
+.serif{font-family:'Noto Serif CJK TC',serif;font-weight:700;}
+.page{position:absolute;inset:0;display:flex;flex-direction:column;}
+
+/* header */
+.hdr{margin:0 31px;background:var(--deep);color:#fff;display:flex;padding:{{ '46px 56px 44px' if mode=='a4' else '40px 56px 38px' }};gap:40px;}
+.hdr .l{flex:1;}
+.kick{color:var(--teal);font-weight:700;font-size:15px;letter-spacing:4.5px;}
+.ttl{font-size:{{ 60 if mode=='a4' else 54 }}px;line-height:1.18;margin-top:16px;letter-spacing:1px;}
+.sub{font-family:'Noto Sans CJK TC';font-size:19px;color:#d6e3e3;margin-top:14px;}
+.sub b{color:#fff;font-weight:500;}
+.lead{width:330px;border-left:1px solid var(--teal);padding-left:36px;display:flex;flex-direction:column;justify-content:center;}
+.lead .tag{font-family:'Noto Sans CJK TC';font-size:16px;color:var(--teal);letter-spacing:2px;}
+.lead .v{font-weight:800;font-size:88px;line-height:1;margin-top:8px;letter-spacing:-1px;}
+.lead .t{font-size:24px;margin-top:12px;line-height:1.35;}
+.lead .n{font-family:'Noto Sans CJK TC';font-size:15px;color:#a9c2c4;margin-top:8px;}
+
+/* stat cards */
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:13px;margin:{{ '26px 92px 0' if mode=='a4' else '24px 92px 0' }};}
+.card{background:#fff;border-top:4px solid var(--teal);padding:16px 18px 15px;}
+.card .lb{font-family:'Noto Sans CJK TC';font-size:16px;color:#34444a;}
+.card .v{font-weight:800;font-size:38px;line-height:1.1;margin-top:6px;color:var(--deep);letter-spacing:-.5px;}
+.card .v small{font-size:20px;font-weight:700;margin-left:2px;}
+.card .n{font-family:'Noto Sans CJK TC';font-size:13.5px;color:var(--mute);margin-top:5px;}
+
+/* news */
+.news{display:flex;flex-direction:column;justify-content:space-between;margin:{{ '30px 92px 0' if mode=='a4' else '26px 92px 0' }};flex:1;}
+.sec{display:flex;flex:1;align-items:center;gap:24px;padding:{{ '16px 0 18px' if mode=='a4' else '13px 0 14px' }};border-top:1px solid var(--line);}
+.sec:first-child{border-top:none;}
+.sec .h{width:118px;flex-shrink:0;align-self:center;}
+.sec .h .bar{width:34px;height:3px;background:var(--teal);margin:14px 0 10px;}
+.sec .h .k{font-size:28px;color:var(--deep);}
+.sec .h .e{font-weight:700;font-size:11.5px;letter-spacing:2.2px;color:var(--acc2);margin-top:4px;}
+.items{flex:1;display:flex;flex-direction:column;gap:{{ '18px' if mode=='a4' else '12px' }};}
+.it .t{font-family:'Noto Sans CJK TC';font-weight:700;font-size:{{ 22.5 if mode=='a4' else 21 }}px;color:var(--ink);line-height:1.4;display:flex;align-items:baseline;gap:10px;}
+.it .t:before{content:'';width:7px;height:7px;background:var(--teal);flex-shrink:0;transform:translateY(-3px);}
+.it .b{font-family:'Noto Sans CJK TC';font-size:18.5px;color:#3e4c51;line-height:1.6;margin:3px 0 0 17px;}
+.it .s{font-weight:600;font-size:12.5px;color:#8a9599;margin-left:auto;white-space:nowrap;padding-left:12px;font-family:'Manrope','Noto Sans CJK TC';}
+
+/* insight */
+.ins{margin:6px 92px 28px;background:#fff;border-left:5px solid var(--teal);padding:18px 26px 18px;display:flex;gap:22px;align-items:flex-start;}
+.ins .k{font-size:22px;color:var(--deep);white-space:nowrap;padding-top:2px;}
+.ins .b{font-family:'Noto Sans CJK TC';font-size:16.5px;line-height:1.65;color:#3e4c51;}
+.ins .s{font-size:12.5px;color:#8a9599;font-weight:600;}
+
+/* footer */
+.ftr{margin:0 31px;background:var(--deep);color:#fff;display:flex;align-items:center;padding:20px 62px 20px 62px;gap:30px;}
+.ftr .l{flex:1;}
+.nm{display:flex;align-items:baseline;gap:18px;}
+.nm .n{font-size:32px;letter-spacing:.5px;}
+.nm .r{font-family:'Noto Sans CJK TC';font-size:17px;color:var(--teal);}
+.ct{font-weight:600;font-size:21px;margin-top:8px;letter-spacing:.3px;}
+.dc{font-family:'Noto Sans CJK TC';font-size:13.5px;color:#a9c2c4;margin-top:8px;}
+.qr{width:104px;height:104px;background:#fff;padding:5px;}
+.qr img{width:100%;height:100%;display:block;image-rendering:pixelated;}
+</style></head><body><div class="page">
+
+<div class="hdr">
+  <div class="l">
+    <div class="kick">{{ th.kicker }} · {{ d.date_en }}</div>
+    <div class="ttl serif">澳洲每日快訊<br>地產・經濟・移民</div>
+    <div class="sub"><b>{{ d.date_label }}</b>　{{ d.tagline }}</div>
+  </div>
+  <div class="lead">
+    <div class="tag">{{ d.lead.tag }}</div>
+    <div class="v">{{ d.lead.value }}</div>
+    <div class="t serif">{{ d.lead.title }}</div>
+    <div class="n">{{ d.lead.note }}</div>
+  </div>
+</div>
+
+<div class="stats">
+{% for s in d.stats %}<div class="card"><div class="lb">{{ s.label }}</div><div class="v">{{ s.value }}<small>{{ s.unit }}</small></div><div class="n">{{ s.note }}</div></div>{% endfor %}
+</div>
+
+<div class="news">
+{% for sec in d.sections %}
+<div class="sec" style="{{ 'padding:20px 0' if mode=='a4' else '' }}">
+  <div class="h"><div class="k serif">{{ sec.key }}</div><div class="e">{{ sec.en }}</div><div class="bar"></div></div>
+  <div class="items">
+  {% for it in sec['items'] %}<div class="it"><div class="t">{{ it.title }}<span class="s">{{ it.src }}</span></div><div class="b">{{ it.body }}</div></div>{% endfor %}
+  </div>
+</div>
+{% endfor %}
+</div>
+
+{% if mode=='a4' %}
+<div class="ins"><div class="k serif">{{ d.insight.title }}</div><div class="b">{{ d.insight.body }}　<span class="s">— {{ d.insight_src }}</span></div></div>
+{% else %}<div style="height:24px"></div>{% endif %}
+
+<div class="ftr">
+  <div class="l">
+    <div class="nm"><span class="n serif">陳先生 Ivan Chen</span><span class="r">資深買方代理 · Mejia Property</span></div>
+    <div class="ct">0433 024 808 · ivan.c@mejia.au</div>
+    <div class="dc">資料整理自公開新聞來源，僅供參考，不構成投資或移民建議。</div>
+  </div>
+  <div class="qr"><img src="data:image/png;base64,{{ qr }}"></div>
+</div>
+
+</div></body></html>
