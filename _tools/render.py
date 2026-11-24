@@ -22,7 +22,7 @@ def qr_b64(fill="#06313f"):
 def build(mode, data):
     H = 1527 if mode == "a4" else 1350
     fonts = {k: b64(FONT_DIR / f"manrope-latin-{w}-normal.woff2") for k, w in (("m600",600),("m700",700),("m800",800))}
-    tpl_name = {"brief": "news_template.html", "deep": "deep_template.html"}[data.get("layout", "brief")]
+    tpl_name = {"brief": "news_template.html", "deep": "deep_template.html", "duo": "duo_template.html"}[data.get("layout", "brief")]
     tpl = Template((HERE / tpl_name).read_text(encoding="utf-8"))
     th = THEMES[int(data.get("theme", 0)) % len(THEMES)]
     return H, tpl.render(d=data, mode=mode, H=H, fonts=fonts, qr=qr_b64(th["deep"]), th=th)
