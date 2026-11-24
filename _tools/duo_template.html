@@ -18,7 +18,7 @@ body{font-family:'Manrope','Noto Sans CJK TC',sans-serif;color:var(--ink);overfl
 .hdr .r{text-align:right;font-family:'Noto Sans CJK TC';}
 .hdr .r .dt{font-size:19px;font-weight:700;}
 .hdr .r .tg{white-space:nowrap;font-size:17px;color:#d5dde0;margin-top:8px;}
-.body{flex:1;display:flex;flex-direction:column;justify-content:space-evenly;margin:0 92px;}
+.body{flex:1;display:flex;flex-direction:column;justify-content:space-evenly;gap:{{ '18px' if A else '12px' }};margin:{{ '18px 62px 4px' if A else '12px 62px 2px' }};}
 .tp{padding:{{ '6px 0' if A else '2px 0' }};}
 .tp + .tp{border-top:1px solid var(--line);padding-top:{{ '26px' if A else '16px' }};}
 .tp .top{display:flex;align-items:center;gap:14px;}
@@ -40,10 +40,10 @@ body{font-family:'Manrope','Noto Sans CJK TC',sans-serif;color:var(--ink);overfl
 .col li{font-family:'Noto Sans CJK TC';font-size:{{ 18 if A else 16.5 }}px;line-height:{{ 1.6 if A else 1.5 }};color:#33434a;padding-left:16px;position:relative;margin-top:{{ '7px' if A else '4px' }};}
 .col li:before{content:'';position:absolute;left:0;top:.6em;width:7px;height:7px;background:var(--acc);}
 .col li b{color:var(--ink);}
-.ins{margin:{{ '8px 92px 0' if A else '4px 92px 0' }};background:#fff;border-left:5px solid var(--acc);padding:{{ '15px 24px' if A else '11px 22px' }};display:flex;gap:20px;align-items:flex-start;}
+.ins{margin:{{ '8px 62px 0' if A else '4px 62px 0' }};background:#fff;border-left:5px solid var(--acc);padding:{{ '15px 24px' if A else '11px 22px' }};display:flex;gap:20px;align-items:flex-start;}
 .ins .k{font-size:21px;color:var(--deep);white-space:nowrap;padding-top:2px;}
 .ins .b{font-family:'Noto Sans CJK TC';font-size:{{ 16.5 if A else 15.5 }}px;line-height:1.65;color:#3e4c51;}
-.src{font-family:'Manrope','Noto Sans CJK TC';font-size:12.5px;font-weight:600;color:#8a9599;margin:{{ '10px 92px 18px' if A else '8px 92px 14px' }};}
+.src{font-family:'Manrope','Noto Sans CJK TC';font-size:12.5px;font-weight:600;color:#8a9599;margin:{{ '10px 62px 16px' if A else '8px 62px 12px' }};}
 .ftr{margin:0 31px;background:var(--deep);color:#fff;display:flex;align-items:center;padding:{{ '20px 62px' if A else '16px 62px' }};gap:30px;}
 .ftr .l{flex:1;}
 .nm{display:flex;align-items:baseline;gap:18px;}
@@ -53,6 +53,21 @@ body{font-family:'Manrope','Noto Sans CJK TC',sans-serif;color:var(--ink);overfl
 .dc{font-family:'Noto Sans CJK TC';font-size:13.5px;color:#b8c4c6;margin-top:8px;}
 .qr{width:{{ 104 if A else 96 }}px;height:{{ 104 if A else 96 }}px;background:#fff;padding:5px;}
 .qr img{width:100%;height:100%;display:block;image-rendering:pixelated;}
+
+.tp{background:#fff;padding:{{ '22px 26px 20px' if A else '16px 22px 14px' }};box-shadow:0 2px 0 var(--line);}
+.tp + .tp{border-top:none;padding-top:{{ '22px' if A else '16px' }};}
+.hero{display:grid;grid-template-columns:{{ '270px 1fr' if A else '236px 1fr' }};gap:{{ '26px' if A else '22px' }};align-items:stretch;}
+.hero.flip{grid-template-columns:{{ '1fr 270px' if A else '1fr 236px' }};}
+.hero.flip .vis{order:2;}
+.vis{position:relative;overflow:hidden;background:linear-gradient(150deg,var(--deep) 0%,var(--deep) 55%,color-mix(in srgb,var(--deep) 70%,var(--acc)) 100%);color:#fff;padding:{{ '20px 22px' if A else '14px 18px' }};display:flex;flex-direction:column;justify-content:space-between;min-height:{{ 228 if A else 196 }}px;}
+.vis:before{content:'';position:absolute;right:-40px;top:-40px;width:170px;height:170px;border-radius:50%;background:var(--acc);opacity:.16;}
+.vis:after{content:'';position:absolute;left:-30px;bottom:-50px;width:140px;height:140px;border-radius:50%;border:14px solid var(--acc);opacity:.12;}
+.vis svg{position:relative;z-index:1;width:{{ 84 if A else 70 }}px;height:{{ 84 if A else 70 }}px;fill:none;stroke:var(--acc);stroke-width:3.2;stroke-linecap:round;stroke-linejoin:round;}
+.vis .hv{position:relative;z-index:1;font-weight:800;font-size:{{ 58 if A else 48 }}px;line-height:1;letter-spacing:-1px;margin-top:10px;}
+.vis .hv small{font-family:'Noto Sans CJK TC';font-size:{{ 22 if A else 19 }}px;font-weight:700;margin-left:4px;letter-spacing:0;}
+.vis .hl{position:relative;z-index:1;font-family:'Noto Sans CJK TC';font-size:{{ 15 if A else 14 }}px;color:#d6e0e2;margin-top:6px;line-height:1.4;}
+.txt{display:flex;flex-direction:column;justify-content:center;}
+.chip{background:var(--cream);}
 </style></head><body><div class="page">
 <div class="hdr">
   <div>
@@ -63,9 +78,14 @@ body{font-family:'Manrope','Noto Sans CJK TC',sans-serif;color:var(--ink);overfl
 </div>
 <div class="body">
 {% for t in d.topics %}<div class="tp">
-  <div class="top"><span class="no">{{ '%02d' % loop.index }}</span><span class="bd">{{ t.badge }}</span><span class="en">{{ t.en }}</span></div>
-  <div class="ttl serif">{{ t.title|safe }}</div>
-  <div class="dek">{{ t.dek|safe }}</div>
+  <div class="hero{{ ' flip' if loop.index==2 else '' }}">
+    <div class="vis"><svg viewBox="0 0 64 64">{{ icons.get(t.icon, icons['globe'])|safe }}</svg><div><div class="hv">{{ t.hero.value }}<small>{{ t.hero.unit }}</small></div><div class="hl">{{ t.hero.label }}</div></div></div>
+    <div class="txt">
+      <div class="top"><span class="no">{{ '%02d' % loop.index }}</span><span class="bd">{{ t.badge }}</span><span class="en">{{ t.en }}</span></div>
+      <div class="ttl serif">{{ t.title|safe }}</div>
+      <div class="dek">{{ t.dek|safe }}</div>
+    </div>
+  </div>
   {% if t.stats %}<div class="chips">{% for s in t.stats %}<div class="chip"><div class="v">{{ s.value }}<small>{{ s.unit }}</small></div><div class="lb">{{ s.label }}</div></div>{% endfor %}</div>{% endif %}
   <div class="cols">{% for c in t.cols %}<div class="col"><div class="k serif">{{ c.key }}</div><ul>{% for x in (c['items'] if A else c['items'][:d.ig_items|default(3)]) %}<li>{{ x|safe }}</li>{% endfor %}</ul></div>{% endfor %}</div>
 </div>{% endfor %}

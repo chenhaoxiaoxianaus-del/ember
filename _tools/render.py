@@ -25,7 +25,8 @@ def build(mode, data):
     tpl_name = {"brief": "news_template.html", "deep": "deep_template.html", "duo": "duo_template.html"}[data.get("layout", "brief")]
     tpl = Template((HERE / tpl_name).read_text(encoding="utf-8"))
     th = THEMES[int(data.get("theme", 0)) % len(THEMES)]
-    return H, tpl.render(d=data, mode=mode, H=H, fonts=fonts, qr=qr_b64(th["deep"]), th=th)
+    ip = HERE / "icons.json"; icons = json.loads(ip.read_text(encoding="utf-8")) if ip.exists() else {}
+    return H, tpl.render(d=data, mode=mode, H=H, fonts=fonts, qr=qr_b64(th["deep"]), th=th, icons=icons)
 async def main(data_path, out_dir):
     data = json.loads(pathlib.Path(data_path).read_text(encoding="utf-8"))
     out = pathlib.Path(out_dir); out.mkdir(parents=True, exist_ok=True)
