@@ -78,12 +78,19 @@ body{font-family:'Manrope','Noto Sans CJK TC',sans-serif;color:var(--ink);overfl
 .ctx .b{font-family:'Noto Sans CJK TC';font-size:{{ 19 if A else 17.5 }}px;line-height:1.7;color:#33434a;}
 .ctx .b b{color:var(--ink);}
 .chart + .chips, .chips + .chart{margin-top:-6px;}
+.hero.ph{background-size:cover;background-position:center;min-height:{{ 560 if A else 470 }}px;align-items:end;}
+.hero.ph:before,.hero.ph:after{display:none;}
+.hero.ph .circ{width:{{ 120 if A else 100 }}px;height:{{ 120 if A else 100 }}px;background:color-mix(in srgb,var(--deep) 70%,transparent);}
+.hero.ph .circ svg{width:{{ 70 if A else 58 }}px;height:{{ 70 if A else 58 }}px;}
+.hero.ph .vis{background:color-mix(in srgb,var(--deep) 78%,transparent);padding:20px 10px;align-self:end;}
+.hero.ph .ttl{text-shadow:0 2px 12px rgba(0,0,0,.35);}
+.credit{position:absolute;right:14px;bottom:8px;z-index:2;font-size:11px;color:rgba(255,255,255,.75);font-family:'Manrope';}
 </style></head><body><div class="page">
 <div class="bar">
   <div><div class="b1 serif">澳洲每日快訊</div><div class="b2">{{ th.kicker }} · {{ d.date_en }}</div></div>
   <div class="pg">{{ '%02d' % d.idx }}<span> / {{ '%02d' % d.total }}</span></div>
 </div>
-<div class="hero">
+<div class="hero{{ ' ph' if s.photo_uri else '' }}"{% if s.photo_uri %} style="background-image:linear-gradient(90deg,color-mix(in srgb,var(--deep) 90%,transparent) 0%,color-mix(in srgb,var(--deep) 60%,transparent) 55%,color-mix(in srgb,var(--deep) 8%,transparent) 100%),url({{ s.photo_uri }});"{% endif %}>
   <div>
     <div class="tags"><span class="bd">{{ s.badge }}</span><span class="en">{{ s.en }}</span></div>
     <div class="ttl serif">{{ s.title|safe }}</div>
@@ -94,6 +101,7 @@ body{font-family:'Manrope','Noto Sans CJK TC',sans-serif;color:var(--ink);overfl
     <div class="hv">{{ s.hero.value }}<small>{{ s.hero.unit }}</small></div>
     <div class="hl">{{ s.hero.label }}</div>
   </div>
+  {% if s.photo_uri and s.photo_credit %}<div class="credit">Photo: {{ s.photo_credit }}</div>{% endif %}
 </div>
 <div class="body">
 {% if s.context %}  <div class="ctx"><div class="k serif">{{ s.context_title|default('來龍去脈') }}</div><div class="b">{{ s.context|safe }}</div></div>{% endif %}

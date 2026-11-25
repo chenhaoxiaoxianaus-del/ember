@@ -34,6 +34,15 @@ async def main(data_path, out_dir):
     if data.get("layout") == "single":
         st = data["stories"]
         for i, s in enumerate(st, 1):
+            s = dict(s)
+            if s.get("photo"):
+                pp = pathlib.Path(s["photo"])
+                if not pp.is_absolute(): pp = pathlib.Path(data_path).parent / pp
+                if pp.exists():
+                    mime = "image/png" if pp.suffix.lower() == ".png" else "image/jpeg"
+                    s["photo_uri"] = f"data:{mime};base64," + b64(pp)
+                else:
+                    print("WARNING photo not found:", pp)
             dd = dict(data, story=s, idx=i, total=len(st))
             jobs += [("a4", f"story{i}_A4.png", dd), ("ig", f"story{i}_IG.png", dd)]
     else:
