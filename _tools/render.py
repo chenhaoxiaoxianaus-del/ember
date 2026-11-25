@@ -22,7 +22,7 @@ def qr_b64(fill="#06313f"):
 def build(mode, data):
     H = 1527 if mode == "a4" else 1350
     fonts = {k: b64(FONT_DIR / f"manrope-latin-{w}-normal.woff2") for k, w in (("m600",600),("m700",700),("m800",800))}
-    tpl_name = {"brief": "news_template.html", "deep": "deep_template.html", "duo": "duo_template.html"}[data.get("layout", "brief")]
+    tpl_name = {"brief": "news_template.html", "deep": "deep_template.html", "duo": "duo_template.html", "single": "single_template.html"}[data.get("layout", "brief")]
     tpl = Template((HERE / tpl_name).read_text(encoding="utf-8"))
     th = THEMES[int(data.get("theme", 0)) % len(THEMES)]
     ip = HERE / "icons.json"; icons = json.loads(ip.read_text(encoding="utf-8")) if ip.exists() else {}
@@ -30,12 +30,21 @@ def build(mode, data):
 async def main(data_path, out_dir):
     data = json.loads(pathlib.Path(data_path).read_text(encoding="utf-8"))
     out = pathlib.Path(out_dir); out.mkdir(parents=True, exist_ok=True)
+    jobs = []
+    if data.get("layout") == "single":
+        st = data["stories"]
+        for i, s in enumerate(st, 1):
+            dd = dict(data, story=s, idx=i, total=len(st))
+            jobs += [("a4", f"story{i}_A4.png", dd), ("ig", f"story{i}_IG.png", dd)]
+    else:
+        jobs = [("a4", "news_A4.png", data), ("ig", "news_IG_4x5.png", data)]
     async with async_playwright() as p:
         br = await p.chromium.launch()
-        for mode, name in (("a4", "news_A4.png"), ("ig", "news_IG_4x5.png")):
-            H, html = build(mode, data)
+        for mode, name, dd in jobs:
+            H, html = build(mode, dd)
             pg = await br.new_page(viewport={"width":1080,"height":H}, device_scale_factor=2)
             await pg.set_content(html, wait_until="networkidle"); await pg.evaluate("document.fonts.ready")
             await pg.screenshot(path=str(out / name)); await pg.close()
         await br.close()
+    print("rendered", [j[1] for j in jobs])
 if __name__ == "__main__": asyncio.run(main(sys.argv[1], sys.argv[2]))

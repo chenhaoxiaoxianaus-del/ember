@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="zh-Hant"><head><meta charset="utf-8">
+<style>
+@font-face{font-family:'Manrope';font-weight:600;src:url(data:font/woff2;base64,{{ fonts.m600 }}) format('woff2');}
+@font-face{font-family:'Manrope';font-weight:700;src:url(data:font/woff2;base64,{{ fonts.m700 }}) format('woff2');}
+@font-face{font-family:'Manrope';font-weight:800;src:url(data:font/woff2;base64,{{ fonts.m800 }}) format('woff2');}
+{% set A = (mode=='a4') %}{% set s = d.story %}
+:root{--deep:{{ th.deep }};--acc:{{ th.accent }};--acc2:{{ th.accent_text }};--cream:{{ th.bg }};--ink:#1d2b31;--mute:#5d6b70;--line:{{ th.line }};}
+*{margin:0;padding:0;box-sizing:border-box;}
+html,body{width:1080px;height:{{ H }}px;background:var(--cream);}
+body{font-family:'Manrope','Noto Sans CJK TC',sans-serif;color:var(--ink);overflow:hidden;-webkit-font-smoothing:antialiased;}
+.serif{font-family:'Noto Serif CJK TC',serif;font-weight:700;}
+.cjk{font-family:'Noto Sans CJK TC';}
+.page{position:absolute;inset:0;display:flex;flex-direction:column;}
+/* top bar */
+.bar{display:flex;align-items:center;justify-content:space-between;padding:{{ '30px 62px 22px' if A else '24px 62px 16px' }};}
+.bar .b1{font-size:30px;color:var(--deep);letter-spacing:1px;}
+.bar .b2{font-weight:700;font-size:14px;letter-spacing:3.5px;color:var(--acc2);margin-top:4px;}
+.bar .pg{font-weight:800;font-size:46px;color:var(--deep);letter-spacing:-1px;}
+.bar .pg span{color:var(--acc2);font-size:26px;letter-spacing:0;}
+/* hero */
+.hero{position:relative;overflow:hidden;margin:0 31px;background:linear-gradient(140deg,var(--deep) 0%,var(--deep) 58%,color-mix(in srgb,var(--deep) 72%,var(--acc)) 100%);color:#fff;display:grid;grid-template-columns:1fr {{ '300px' if A else '270px' }};gap:24px;padding:{{ '46px 50px 44px 50px' if A else '34px 44px 32px 44px' }};}
+.hero:before{content:'';position:absolute;right:-90px;top:-110px;width:380px;height:380px;border-radius:50%;background:var(--acc);opacity:.13;}
+.hero:after{content:'';position:absolute;left:38%;bottom:-120px;width:260px;height:260px;border-radius:50%;border:22px solid var(--acc);opacity:.08;}
+.hero > div{position:relative;z-index:1;}
+.tags{display:flex;align-items:center;gap:12px;}
+.tags .bd{font-family:'Noto Sans CJK TC';font-size:16px;font-weight:700;letter-spacing:2px;background:var(--acc);color:var(--deep);padding:5px 14px;}
+.tags .en{font-weight:700;font-size:12.5px;letter-spacing:2.6px;color:var(--acc);}
+.ttl{font-size:{{ 60 if A else 52 }}px;line-height:1.28;margin-top:{{ '20px' if A else '14px' }};letter-spacing:.5px;}
+.ttl em{font-style:normal;color:var(--acc);}
+.dek{font-family:'Noto Sans CJK TC';font-size:{{ 21.5 if A else 20 }}px;line-height:1.65;color:#d9e2e4;margin-top:{{ '16px' if A else '12px' }};}
+.dek b{color:#fff;}
+.vis{display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;}
+.circ{width:{{ 220 if A else 180 }}px;height:{{ 220 if A else 180 }}px;border-radius:50%;background:rgba(255,255,255,.07);border:2px solid color-mix(in srgb,var(--acc) 60%,transparent);display:flex;align-items:center;justify-content:center;}
+.circ svg{width:{{ 130 if A else 108 }}px;height:{{ 130 if A else 108 }}px;fill:none;stroke:var(--acc);stroke-width:3;stroke-linecap:round;stroke-linejoin:round;}
+.hv{font-weight:800;font-size:{{ 72 if A else 60 }}px;line-height:1;letter-spacing:-1.5px;margin-top:{{ '22px' if A else '16px' }};white-space:nowrap;}
+.hv small{font-family:'Noto Sans CJK TC';font-size:{{ 22 if A else 20 }}px;font-weight:700;margin-left:4px;letter-spacing:0;}
+.hl{font-family:'Noto Sans CJK TC';font-size:{{ 15.5 if A else 14.5 }}px;color:#d0dadc;margin-top:8px;line-height:1.45;}
+/* body */
+.body{flex:1;display:flex;flex-direction:column;justify-content:space-evenly;margin:0 62px;padding:{{ '10px 0 4px' if A else '6px 0 2px' }};}
+.sec{font-size:{{ 23 if A else 21 }}px;color:var(--deep);display:flex;align-items:baseline;gap:12px;}
+.sec small{font-family:'Noto Sans CJK TC';font-size:14px;color:var(--mute);font-weight:400;}
+.chart{background:#fff;padding:{{ '18px 26px 16px' if A else '13px 22px 11px' }};}
+.row{display:grid;grid-template-columns:{{ '190px 1fr 120px' if A else '170px 1fr 110px' }};align-items:center;gap:14px;margin-top:{{ '11px' if A else '8px' }};}
+.row .l{font-family:'Noto Sans CJK TC';font-size:{{ 17 if A else 16 }}px;color:#34444a;}
+.row .t{height:{{ 22 if A else 19 }}px;background:var(--cream);}
+.row .f{height:100%;background:color-mix(in srgb,var(--deep) 38%,var(--cream));}
+.row.hi .f{background:var(--acc);}
+.row.hi .l{font-weight:700;color:var(--ink);}
+.row .v{font-weight:800;font-size:{{ 22 if A else 20 }}px;color:var(--deep);text-align:right;white-space:nowrap;}
+.row .v small{font-family:'Noto Sans CJK TC';font-size:14px;font-weight:700;margin-left:2px;}
+.chips{display:grid;grid-template-columns:repeat({{ (s.stats or [])|length or 1 }},1fr);gap:14px;}
+.chip{background:#fff;border-top:4px solid var(--acc);padding:{{ '16px 20px' if A else '12px 18px' }};}
+.chip .v{font-weight:800;font-size:{{ 36 if A else 31 }}px;color:var(--deep);line-height:1.1;letter-spacing:-.4px;}
+.chip .v small{font-family:'Noto Sans CJK TC';font-size:17px;font-weight:700;margin-left:3px;}
+.chip .lb{font-family:'Noto Sans CJK TC';font-size:14.5px;color:var(--mute);margin-top:5px;line-height:1.4;}
+.cols{display:grid;grid-template-columns:1fr 1fr;gap:0 40px;}
+.col .k{font-size:{{ 25 if A else 23 }}px;color:var(--deep);padding-bottom:6px;border-bottom:2px solid var(--acc);display:inline-block;}
+.col ul{list-style:none;margin-top:6px;}
+.col li{font-family:'Noto Sans CJK TC';font-size:{{ 20.5 if A else 18.5 }}px;line-height:{{ 1.6 if A else 1.5 }};color:#33434a;padding-left:17px;position:relative;margin-top:{{ '9px' if A else '6px' }};}
+.col li:before{content:'';position:absolute;left:0;top:.62em;width:7px;height:7px;background:var(--acc);}
+.col li b{color:var(--ink);}
+.note{background:#fff;border-left:5px solid var(--acc);padding:{{ '14px 22px' if A else '11px 20px' }};display:flex;gap:18px;align-items:flex-start;}
+.note .k{font-size:21px;color:var(--deep);white-space:nowrap;padding-top:1px;}
+.note .b{font-family:'Noto Sans CJK TC';font-size:{{ 18 if A else 17 }}px;line-height:1.6;color:#3e4c51;}
+.src{font-family:'Manrope','Noto Sans CJK TC';font-size:12.5px;font-weight:600;color:#8a9599;margin:{{ '8px 62px 14px' if A else '6px 62px 10px' }};}
+.ftr{margin:0 31px;background:var(--deep);color:#fff;display:flex;align-items:center;padding:{{ '18px 62px' if A else '14px 62px' }};gap:26px;}
+.ftr .l{flex:1;}
+.nm{display:flex;align-items:baseline;gap:16px;}
+.nm .n{font-size:{{ 30 if A else 27 }}px;letter-spacing:.5px;}
+.nm .r{font-family:'Noto Sans CJK TC';font-size:16px;color:var(--acc);}
+.ct{font-weight:600;font-size:{{ 20 if A else 19 }}px;margin-top:6px;letter-spacing:.3px;}
+.dc{font-family:'Noto Sans CJK TC';font-size:12.5px;color:#b8c4c6;margin-top:6px;}
+.qr{width:{{ 96 if A else 86 }}px;height:{{ 96 if A else 86 }}px;background:#fff;padding:5px;}
+.qr img{width:100%;height:100%;display:block;image-rendering:pixelated;}
+.ctx{background:#fff;padding:{{ '18px 26px' if A else '14px 22px' }};display:flex;gap:18px;align-items:flex-start;}
+.ctx .k{font-size:{{ 23 if A else 21 }}px;color:var(--acc2);white-space:nowrap;}
+.ctx .b{font-family:'Noto Sans CJK TC';font-size:{{ 19 if A else 17.5 }}px;line-height:1.7;color:#33434a;}
+.ctx .b b{color:var(--ink);}
+.chart + .chips, .chips + .chart{margin-top:-6px;}
+</style></head><body><div class="page">
+<div class="bar">
+  <div><div class="b1 serif">澳洲每日快訊</div><div class="b2">{{ th.kicker }} · {{ d.date_en }}</div></div>
+  <div class="pg">{{ '%02d' % d.idx }}<span> / {{ '%02d' % d.total }}</span></div>
+</div>
+<div class="hero">
+  <div>
+    <div class="tags"><span class="bd">{{ s.badge }}</span><span class="en">{{ s.en }}</span></div>
+    <div class="ttl serif">{{ s.title|safe }}</div>
+    <div class="dek">{{ s.dek|safe }}</div>
+  </div>
+  <div class="vis">
+    <div class="circ"><svg viewBox="0 0 64 64">{{ icons.get(s.icon, icons['globe'])|safe }}</svg></div>
+    <div class="hv">{{ s.hero.value }}<small>{{ s.hero.unit }}</small></div>
+    <div class="hl">{{ s.hero.label }}</div>
+  </div>
+</div>
+<div class="body">
+{% if s.context %}  <div class="ctx"><div class="k serif">{{ s.context_title|default('來龍去脈') }}</div><div class="b">{{ s.context|safe }}</div></div>{% endif %}
+{% if s.chart %}{% set mx = s.chart.bars|map(attribute='value')|max %}
+  <div class="chart">
+    <div class="sec serif">{{ s.chart.title }}{% if s.chart.note %}<small>{{ s.chart.note }}</small>{% endif %}</div>
+    {% for b in s.chart.bars %}<div class="row{{ ' hi' if b.hi else '' }}"><div class="l">{{ b.label }}</div><div class="t"><div class="f" style="width:{{ (b.value / mx * 100)|round(1) if mx else 0 }}%"></div></div><div class="v">{{ b.show|default(b.value) }}<small>{{ s.chart.unit }}</small></div></div>{% endfor %}
+  </div>
+{% endif %}{% if s.stats and (A or not s.chart) %}
+  <div class="chips">{% for x in s.stats %}<div class="chip"><div class="v">{{ x.value }}<small>{{ x.unit }}</small></div><div class="lb">{{ x.label }}</div></div>{% endfor %}</div>
+{% endif %}
+  <div class="cols">{% for c in s.cols %}<div class="col"><div class="k serif">{{ c.key }}</div><ul>{% for x in c['items'] %}<li>{{ x|safe }}</li>{% endfor %}</ul></div>{% endfor %}</div>
+{% if s.note %}  <div class="note"><div class="k serif">Ivan 一句話</div><div class="b">{{ s.note }}</div></div>{% endif %}
+</div>
+<div class="src">資料來源：{{ s.sources }}</div>
+<div class="ftr">
+  <div class="l">
+    <div class="nm"><span class="n serif">陳先生 Ivan Chen</span><span class="r">資深買方代理 · Mejia Property</span></div>
+    <div class="ct">0433 024 808 · ivan.c@mejia.au</div>
+    <div class="dc">資料整理自公開新聞來源，僅供參考，不構成投資或移民建議。</div>
+  </div>
+  <div class="qr"><img src="data:image/png;base64,{{ qr }}"></div>
+</div>
+</div></body></html>
